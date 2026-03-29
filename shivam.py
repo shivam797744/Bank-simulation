@@ -1,18 +1,26 @@
+import streamlit as st
 import random
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-print("===== BANK QUEUE WITH PERFORMANCE METRICS =====")
+st.title("Bank Queue Simulation")
+st.write("Enter values and click button")
+st.write("===== BANK QUEUE WITH PERFORMANCE METRICS =====")
 
 # INPUT
-customers = int(input("Enter number of customers: "))
-tellers = int(input("Enter number of tellers: "))
+customers = int(st.number_input("Enter number of customers", min_value=1))
+tellers = int(st.number_input("Enter number of tellers", min_value=1))
 
-arrival = []
-service = []
-waiting = []
-start = []
-end = []
+if st.button("Run Simulation"):
 
+    st.write("Simulation Running...")
+
+    arrival = []
+    service = []
+    waiting = []
+    start = []
+    end = []
 time = 0
 
 # Generate arrival times
@@ -61,11 +69,11 @@ mu = 1 / avg_service
 rho = lambda_rate / (tellers * mu)
 
 # Stability check
-print("\nServer Utilization (ρ):", round(rho,3))
+  st.write("\nServer Utilization (ρ):", round(rho,3))
 if rho < 1:
-    print("System is STABLE")
+   st.write("System is STABLE")
 else:
-    print("System is UNSTABLE")
+      st.write("System is UNSTABLE")
 
 # Waiting time (Wq) and system time (W)
 Wq = avg_wait
@@ -75,10 +83,10 @@ W = avg_wait + avg_service
 Lq = lambda_rate * Wq
 L = lambda_rate * W
 
-print("\nAverage Waiting Time (Wq):", round(Wq,2))
-print("Average Time in System (W):", round(W,2))
-print("Average number in Queue (Lq):", round(Lq,2))
-print("Average number in System (L):", round(L,2))
+  st.write("\nAverage Waiting Time (Wq):", round(Wq,2))
+  st.write("Average Time in System (W):", round(W,2))
+  st.write("Average number in Queue (Lq):", round(Lq,2))
+  st.write("Average number in System (L):", round(L,2))
 
 # ----------------------------
 # GRAPH 1 (Customer vs Waiting)
@@ -88,7 +96,7 @@ plt.xlabel("Customer Number")
 plt.ylabel("Waiting Time")
 plt.title("Customer Waiting Time Graph")
 plt.grid(True)
-plt.show()
+st.pyplot(plt)
 
 # ----------------------------
 # GRAPH 2 (Arrival Rate vs Waiting Time)
@@ -101,5 +109,7 @@ plt.xlabel("Arrival Rate (λ)")
 plt.ylabel("Average Waiting Time")
 plt.title("Arrival Rate vs Waiting Time")
 plt.grid(True)
-plt.show()
+st.pyplot(plt)
+
+
 
